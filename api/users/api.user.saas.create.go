@@ -30,9 +30,9 @@ func apiCreateSaasUser(ctx server.Context) {
 		ctx.Json(resp)
 		return
 	}
-	if len(req.UserCode) == 0 || len(req.UserCode) == 0 || len(req.OrgCode) == 0 {
+	if len(req.UserCode) == 0 || len(req.OrgCode) == 0 {
 		resp.Code = http.StatusBadRequest
-		resp.Message = "phone or email or password is empty"
+		resp.Message = "userCode or orgCode is empty"
 		ctx.Json(resp)
 		return
 	}

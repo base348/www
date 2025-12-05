@@ -1,4 +1,4 @@
-package domain
+package domains
 
 import (
 	"github.com/lishimeng/www"
@@ -10,7 +10,6 @@ type handler struct {
 
 func InitManagers() {
 	h := handler{}
-	// todo: Project的权限管理
 	identity := www.NewDbIdentityManager(h)
 	container.Add(&identity)
 	route := www.NewDbRouteManager(h)

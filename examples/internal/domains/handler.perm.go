@@ -1,4 +1,4 @@
-package domain
+package domains
 
 import (
 	"errors"
@@ -33,7 +33,14 @@ func (h handler) TxCreatePerm(tx persistence.TxContext, dto *dto.Permission) (er
 
 func (h handler) TxUpdatePerm(tx persistence.TxContext, dto *dto.Permission) (err error) {
 	var model permissionsTable.AuthPermissions
+	var id int
+	model.Code = dto.Code
+	if err = tx.Context.Read(&model, "Code"); err != nil {
+		return
+	}
+	id = model.Id
 	model.Convert(*dto)
+	model.Id = id
 	_, err = tx.Context.Update(&model)
 	return
 }
@@ -59,9 +66,12 @@ func (h handler) GetAllPerms() (perms []dto.Permission) {
 
 func (h handler) GetPermsByRole(roleCode string) (perms []dto.Permission) {
 	var models []permissionsTable.AuthRolePermissions
-	_, _ = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthRolePermissions)).
+	n, _ := app.GetOrm().Context.QueryTable(new(permissionsTable.AuthRolePermissions)).
 		Filter("RoleCode", roleCode).
 		All(&models)
+	if n == 0 {
+		return
+	}
 	var permCodes []string
 	for _, one := range models {
 		permCodes = append(permCodes, one.PermissionCode)
