@@ -8,6 +8,7 @@ import (
 	"github.com/lishimeng/www/api/projects"
 	"github.com/lishimeng/www/api/roles"
 	"github.com/lishimeng/www/api/users"
+	"github.com/lishimeng/www/examples/admin/ddd/security"
 )
 
 func Route(app server.Router) {
@@ -21,4 +22,5 @@ func router(root server.Router) {
 	projects.Router(root.Path("/projects"))
 	roles.Router(root.Path("/roles"))
 	users.Router(root.Path("/users"))
+	security.Router(root.Path("/users"))
 }

@@ -1,4 +1,4 @@
-package domain
+package domains
 
 import (
 	"errors"
@@ -40,14 +40,14 @@ func (h handler) GetAllRole() (list []dto.Role, err error) {
 
 func (h handler) CreateRole(role *dto.Role) (err error) {
 	var model permissionsTable.AuthRoles
-	model.Transform(role)
+	model.Convert(*role)
 	_, err = app.GetOrm().Context.Insert(&model)
 	return
 }
 
 func (h handler) UpdateRole(role *dto.Role) (err error) {
 	var model permissionsTable.AuthRoles
-	model.Transform(role)
+	model.Convert(*role)
 	_, err = app.GetOrm().Context.Update(&model)
 	return
 }
@@ -83,13 +83,14 @@ func (h handler) CreateUserRole(userCode, roleCode string) (ur dto.UserRole, err
 	model.UserCode = userCode
 	model.RoleCode = roleCode
 	model.IsGlobal = 1
-	// todo: 暂时全global，后续升级
+	// todo: 暂时全global，后续升级; 与 role的 global字段一致？
+	// RoleCategoryCode 与role表一致？
 	_, err = app.GetOrm().Context.Insert(&model)
 	return
 }
 
 func (h handler) DeleteUserRole(userCode, roleCode string) (err error) {
-	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthRolePermissions)).
+	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles)).
 		Filter("UserCode", userCode).
 		Filter("RoleCode", roleCode).
 		Delete()
@@ -98,10 +99,14 @@ func (h handler) DeleteUserRole(userCode, roleCode string) (err error) {
 
 func (h handler) GetUserRole(filterUserCode, filterRoleCode string) (list []dto.UserRole, err error) {
 	var models []permissionsTable.AuthUserRoles
-	_, err = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles)).
-		Filter("UserCode", filterUserCode).
-		Filter("RoleCode", filterRoleCode).
-		All(&models)
+	q := app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles))
+	if len(filterUserCode) > 0 {
+		q = q.Filter("UserCode", filterUserCode)
+	}
+	if len(filterRoleCode) > 0 {
+		q = q.Filter("RoleCode", filterRoleCode)
+	}
+	_, err = q.All(&models)
 	if err != nil {
 		return
 	}

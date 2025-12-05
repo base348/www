@@ -19,5 +19,6 @@ func (m *DbSaasOperationManager) CreateSaas(userCode string, orgCode string) (on
 }
 
 func (m *DbSaasOperationManager) SaasList(orgCode string, pager *app.Pager[dto.SaasUser]) (err error) {
+	err = m.domain.SaasUserPage(orgCode, pager)
 	return
 }

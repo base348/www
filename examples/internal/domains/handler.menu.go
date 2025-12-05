@@ -1,9 +1,10 @@
-package domain
+package domains
 
 import (
 	"errors"
 	"github.com/lishimeng/app-starter"
 	"github.com/lishimeng/app-starter/persistence"
+	"github.com/lishimeng/www"
 	"github.com/lishimeng/www/def"
 	"github.com/lishimeng/www/dto"
 	"github.com/lishimeng/www/examples/internal/db/auth/permissionsTable"
@@ -12,7 +13,7 @@ import (
 func (h handler) GetUserRouters(userCode string) (list []dto.Menu) {
 	var models []permissionsTable.AuthUserRouterView
 	_, _ = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRouterView)).
-		Filter("HasPerm", 1).
+		Filter("MenuGroup", www.SystemMenuGroup).
 		Filter("UserCode", userCode).
 		All(&models)
 	for _, model := range models {
@@ -26,6 +27,7 @@ func (h handler) GetUserRouters(userCode string) (list []dto.Menu) {
 func (h handler) GetCommonRouters() (list []dto.Menu) {
 	var models []permissionsTable.AuthMenu
 	_, _ = app.GetOrm().Context.QueryTable(new(permissionsTable.AuthMenu)).
+		Filter("MenuGroup", www.SystemMenuGroup).
 		Filter("HasPerm", 0).
 		All(&models)
 	for _, model := range models {

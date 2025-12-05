@@ -35,9 +35,18 @@ func (ar *AuthRoles) Transform(dst *dto.Role) {
 	dst.Name = ar.Name
 	dst.RoleCategoryCode = ar.RoleCategoryCode
 	dst.ProjectCode = ar.ProjectCode
-	dst.RoleCategoryCode = ar.RoleCategoryCode
-	dst.IsGlobal = ar.IsGlobal == 1
+	dst.IsGlobal = ar.IsGlobalRole()
+}
 
+func (ar *AuthRoles) Convert(src dto.Role) {
+	ar.Id = src.Id
+	ar.Code = src.Code
+	ar.Name = src.Name
+	ar.RoleCategoryCode = src.RoleCategoryCode
+	ar.ProjectCode = src.ProjectCode
+	if src.IsGlobal {
+		ar.IsGlobal = 1
+	}
 }
 
 type AuthUserRoles struct { // 用户权限列表, 使用user和项目(project/global)确定权限范围

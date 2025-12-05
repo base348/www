@@ -3,6 +3,7 @@ module github.com/lishimeng/www
 go 1.23.1
 
 require (
+	github.com/lib/pq v1.10.9
 	github.com/lishimeng/app-starter v1.21.12
 	github.com/lishimeng/go-log v1.0.0
 	github.com/lishimeng/x v1.3.0
@@ -15,6 +16,7 @@ require (
 	github.com/CloudyKit/jet/v6 v6.2.0 // indirect
 	github.com/Joker/jade v1.1.3 // indirect
 	github.com/Shopify/goreferrer v0.0.0-20220729165902-8cddb4f5de06 // indirect
+	github.com/ZZMarquis/gm v1.3.2 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/beego/beego/v2 v2.3.6 // indirect
@@ -45,7 +47,6 @@ require (
 	github.com/kataras/sitemap v0.0.6 // indirect
 	github.com/kataras/tunnel v0.0.4 // indirect
 	github.com/klauspost/compress v1.17.7 // indirect
-	github.com/lib/pq v1.10.9 // indirect
 	github.com/lishimeng/go-app-shutdown v1.0.1 // indirect
 	github.com/lishimeng/log4go v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect

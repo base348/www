@@ -1,4 +1,4 @@
-package domain
+package domains
 
 import (
 	"github.com/lishimeng/app-starter"
@@ -13,6 +13,7 @@ func (h handler) CreateSaasUser(userCode string, orgCode string) (u dto.SaasUser
 	model.EnterpriseCode = orgCode
 	// todo: 查询用户信息
 	_, err = app.GetOrm().Context.Insert(&model)
+	model.Transform(&u)
 	return
 }
 

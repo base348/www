@@ -1,17 +1,23 @@
-package identities
+package security
 
 import (
 	"github.com/lishimeng/app-starter"
 	"github.com/lishimeng/app-starter/server"
 	"github.com/lishimeng/go-log"
-	"github.com/lishimeng/www"
 	"github.com/lishimeng/www/def"
-	"github.com/lishimeng/x/container"
+	"github.com/lishimeng/www/examples/internal/db/auth/usersTable"
 	"net/http"
 )
 
-func apiAddIdentity(ctx server.Context) {
-	var req IdentityForm
+type reqRegister struct {
+	IdentityCode string           `json:"identityCode"`
+	Password     string           `json:"password"` // todo: encode ?
+	IdentityType *int             `json:"identityType"`
+	Platform     def.UserPlatform `json:"platform"`
+}
+
+func registerApi(ctx server.Context) {
+	var req reqRegister
 	var err error
 	var resp app.ResponseWrapper
 
@@ -25,14 +31,14 @@ func apiAddIdentity(ctx server.Context) {
 
 	if len(req.IdentityCode) == 0 {
 		resp.Code = http.StatusBadRequest
-		resp.Message = "identity code can not be null"
+		resp.Message = "identity can not be null"
 		ctx.Json(resp)
 		return
 	}
 
-	if len(req.UserCode) == 0 {
+	if req.Platform == 0 {
 		resp.Code = http.StatusBadRequest
-		resp.Message = "user code can not be null"
+		resp.Message = "platform can not be null"
 		ctx.Json(resp)
 		return
 	}
@@ -45,12 +51,21 @@ func apiAddIdentity(ctx server.Context) {
 		identityType = def.DetectIdentityType(req.IdentityCode)
 	}
 
-	var identityManager www.IdentityManager
-	_ = container.Get(&identityManager)
-
-	err = identityManager.Bind(req.IdentityCode, req.UserCode, identityType)
+	_, user, err := CreateSecurityUser(req.IdentityCode, identityType, req.Platform)
 	if err != nil {
-		log.Info("绑定登录凭证失败: %v", err)
+		log.Info("创建用户失败: %v", err)
+		resp.Code = http.StatusInternalServerError
+		resp.Message = err.Error()
+		ctx.Json(resp)
+		return
+	}
+
+	// 设置密码
+	err = UpdatePsw(user.Code, req.Password, func(_ usersTable.AuthSecurityInfo) bool {
+		return true
+	})
+	if err != nil {
+		log.Info("设置密码失败: %v", err)
 		resp.Code = http.StatusInternalServerError
 		resp.Message = err.Error()
 		ctx.Json(resp)
@@ -58,6 +73,6 @@ func apiAddIdentity(ctx server.Context) {
 	}
 
 	resp.Code = http.StatusOK
-	resp.Message = "success"
+	resp.Data = user
 	ctx.Json(resp)
 }
