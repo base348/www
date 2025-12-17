@@ -36,4 +36,5 @@ func Router(root server.Router) {
 	b.Post("/", www.WithAuth(apiUserBindRole)...)                  // 用户绑定角色(添加user与role的关系)
 	b.Delete("/", www.WithAuth(apiUserUnbindRole)...)              // 用户解绑角色(删除user与role的关系)
 	b.Get("/{roleCode}", www.WithAuth(apiUserBindUserRoleList)...) // 角色下绑定的用户列表
+	b.Get("/user/{user}", www.WithAuth(apiUserRoleList)...)        // 用户绑定的角色列表
 }

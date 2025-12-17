@@ -23,6 +23,7 @@ type RoleOperationManager interface {
 	BindUser(saasUserCode, roleCode string) (ur dto.UserRole, err error)
 	UnbindUser(saasUserCode, roleCode string) (err error)
 	RoleUsers(roleCode string) (list []dto.UserRole, err error)
+	UserRoles(saasUser string) (list []dto.UserRole, err error)
 }
 type RoleOperationDomainHandler interface {
 	GetAllRole() (list []dto.Role, err error)

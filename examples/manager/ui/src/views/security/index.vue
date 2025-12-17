@@ -96,43 +96,6 @@
     </el-dialog>
 
     <el-dialog
-        v-model="registerDialogVisible"
-        title="新增账号"
-        width="500px"
-        @closed="onDialogClosed"
-    >
-      <el-form
-          ref="registerFormRef"
-          :model="registerForm"
-          :rules="formRules"
-          label-width="120px"
-      >
-        <el-form-item label="登录凭证" prop="identityCode">
-          <el-input v-model="registerForm.identityCode" />
-        </el-form-item>
-        <el-form-item label="登录凭证类型" prop="identityType">
-          <el-select v-model="registerForm.identityType" clearable placeholder="留空以自动判断（手机号/邮箱/微信Id）">
-            <el-option v-for="item in platformOptions" :key="item.value" :value="item.value" :label="item.label"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="registerForm.password" />
-        </el-form-item>
-        <el-form-item label="账号平台" prop="platform">
-          <el-select v-model="registerForm.platform" clearable placeholder="请选择">
-            <el-option v-for="item in platformOptions" :key="item.value" :value="item.value" :label="item.label"/>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button class="w-18" :loading="isSubmitting" @click="registerDialogVisible = false">取消</el-button>
-          <el-button class="w-18" type="primary" :loading="isSubmitting" @click="submitRegister">提交</el-button>
-        </span>
-      </template>
-    </el-dialog>
-
-    <el-dialog
       v-model="registerDialogVisible"
       title="新增账号"
       width="500px"
@@ -153,7 +116,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="registerForm.password" />
+          <el-input v-model="registerForm.password" show-password />
         </el-form-item>
         <el-form-item label="账号平台" prop="platform">
           <el-select v-model="registerForm.platform" clearable placeholder="请选择">
