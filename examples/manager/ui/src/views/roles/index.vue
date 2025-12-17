@@ -81,7 +81,7 @@ import {roleColumns, roleUrl} from "@/types/tables/role.table";
 import PermissionTags from "@/views/roles/components/PermissionTags.vue";
 import {getRoleCategoriesApi, bindRolePermissionApi, unbindRolePermissionApi} from "@/api/system/role.api";
 import {permissionColumns, permissionUrl} from "@/types/tables/permission.table";
-import {Category, ElTagStyle, Permission} from "@/views/roles/types";
+import {Category, ElTagStyle, Tag} from "@/views/roles/types";
 
 // const bizIdref = ref();
 const tableRef = ref();
@@ -111,11 +111,11 @@ const permissionStatus = reactive({
   role: "",
   done: () => {},
   dialogVisible: false,
-  current: [] as Permission[],
+  current: [] as Tag[],
   initialized: false,
 });
 
-const permissionModify = (role: string, done: () => void, current: Permission[]) => {
+const permissionModify = (role: string, done: () => void, current: Tag[]) => {
   permissionStatus.role = role;
   permissionStatus.done = done;
   permissionStatus.current = current;
@@ -132,7 +132,7 @@ const onTableLoaded = async () => {
   permissionTableRef.value.initialized = true;
 }
 
-const handleSelectionChange = async (modified: Permission[]) => {
+const handleSelectionChange = async (modified: Tag[]) => {
   // find diff
   if (!permissionTableRef.value.initialized) return;
   if (modified.length > permissionStatus.current.length) {

@@ -53,3 +53,8 @@ func (h *DbRoleOperationManager) RoleUsers(roleCode string) (list []dto.UserRole
 	list, err = h.domain.GetUserRole("", roleCode)
 	return
 }
+
+func (h *DbRoleOperationManager) UserRoles(saasUser string) (list []dto.UserRole, err error) {
+	list, err = h.domain.GetUserRole(saasUser, "")
+	return
+}

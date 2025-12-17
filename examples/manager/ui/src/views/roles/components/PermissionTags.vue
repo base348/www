@@ -3,13 +3,13 @@
     <el-tag
       v-for="permission in permissions"
       :key="permission.code"
-      closable
+      :closable="!readonly"
       :type="permission.style"
       @close="delPermission(permission)"
     >
       {{ permission.name }}
     </el-tag>
-    <el-button size="small" @click="showSelect">
+    <el-button size="small" v-if="!readonly" @click="showSelect">
       + 权限
     </el-button>
   </div>
@@ -21,9 +21,9 @@ import {withConfirm} from "@/composables/useConfirmDialog";
 import {
   CategoryMapFunc,
   categoryMapFuncWrapper,
-  Permission,
-  PermissionModifyFunc,
-  permissionModifyFuncWrapper
+  Tag,
+  TagsModifyFunc,
+  tagsModifyFuncWrapper
 } from "@/views/roles/types";
 
 const props = defineProps({
@@ -35,9 +35,13 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  readonly: {
+    type: Boolean,
+    default: false
+  }
 });
 
-const permissions = ref<Permission[]>([]);
+const permissions = ref<Tag[]>([]);
 
 const injectErr = () => {
   console.log("inject not found")
@@ -45,7 +49,7 @@ const injectErr = () => {
 }
 
 const categoryMap = inject<CategoryMapFunc>("categoryMap", categoryMapFuncWrapper(injectErr))
-const permissionModify = inject<PermissionModifyFunc>("permissionModify", permissionModifyFuncWrapper(injectErr));
+const permissionModify = inject<TagsModifyFunc>("permissionModify", tagsModifyFuncWrapper(injectErr));
 
 const showSelect = () => {
   permissionModify(props.role, () => {
@@ -53,7 +57,7 @@ const showSelect = () => {
   }, permissions.value);
 }
 
-const delPermission = async (permission: Permission) => {
+const delPermission = async (permission: Tag) => {
   const result = await withConfirm({
     message: `是否删除角色${props.name}的绑定权限：${permission.name}？`,
     title: "确认删除权限",
@@ -68,7 +72,7 @@ const delPermission = async (permission: Permission) => {
 
 const fetchPermissions = (role:string) => {
   if (role) {
-    getRolePermissionsApi(role).then((data: Permission[]) => {
+    getRolePermissionsApi(role).then((data: Tag[]) => {
       if (data) {
         permissions.value = data.map(permission => {
           permission.style = categoryMap(permission.category)

@@ -109,3 +109,27 @@ func apiUserBindUserRoleList(ctx server.Context) {
 	resp.Data = urs
 	ctx.Json(resp)
 }
+
+// UserRoles
+func apiUserRoleList(ctx server.Context) {
+	var resp app.ResponseWrapper
+	roleCode := ctx.C.Params().GetStringDefault("user", "")
+	if len(roleCode) == 0 {
+		resp.Code = http.StatusOK
+		resp.Data = []string{}
+		ctx.Json(resp)
+		return
+	}
+	var m = getRoleOptManager()
+	urs, err := m.UserRoles(roleCode)
+	if err != nil {
+		log.Info(err)
+		resp.Code = http.StatusOK
+		resp.Data = []string{}
+		ctx.Json(resp)
+		return
+	}
+	resp.Code = http.StatusOK
+	resp.Data = urs
+	ctx.Json(resp)
+}

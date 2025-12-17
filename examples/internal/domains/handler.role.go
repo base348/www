@@ -74,7 +74,7 @@ func (h handler) GetRoleByCode(roleCode string) (role dto.Role, err error) {
 func (h handler) CreateUserRole(saasUserCode, roleCode string) (ur dto.UserRole, err error) {
 	// 先检查重复
 	repeated := app.GetOrm().Context.QueryTable(new(permissionsTable.AuthUserRoles)).
-		Filter("UserCode", saasUserCode).
+		Filter("SaasUserCode", saasUserCode).
 		Filter("RoleCode", roleCode).
 		Exist()
 	if repeated {

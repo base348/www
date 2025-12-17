@@ -5,9 +5,9 @@ import (
 	"github.com/lishimeng/www/api/identities"
 	"github.com/lishimeng/www/api/menus"
 	"github.com/lishimeng/www/api/permissions"
-	"github.com/lishimeng/www/api/projects"
 	"github.com/lishimeng/www/api/roles"
 	"github.com/lishimeng/www/api/users"
+	"github.com/lishimeng/www/examples/admin/ddd/projects"
 	"github.com/lishimeng/www/examples/admin/ddd/security"
 )
 
