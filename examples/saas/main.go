@@ -7,6 +7,8 @@ import (
 	"github.com/lishimeng/app-starter/persistence"
 	"github.com/lishimeng/app-starter/token"
 	"github.com/lishimeng/go-log"
+	"github.com/lishimeng/www"
+	"github.com/lishimeng/www/def"
 	"github.com/lishimeng/www/examples/internal/db"
 	"github.com/lishimeng/www/examples/internal/etc"
 	"github.com/lishimeng/www/examples/saas/ddd"
@@ -33,9 +35,12 @@ func main() {
 
 func _main() (err error) {
 
-	application := app.New()
+	// manager 实施配置，管理账号、身份以及saas组织
+	www.SystemScope = def.Saas
+	www.SystemMenuGroup = "m_saas"
+	www.EnableAuthChk = true
 
-	// todo: 系统group写在这里
+	application := app.New()
 
 	err = application.Start(func(ctx context.Context, builder *app.ApplicationBuilder) error {
 

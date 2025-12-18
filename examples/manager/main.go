@@ -6,6 +6,8 @@ import (
 	"github.com/lishimeng/app-starter"
 	"github.com/lishimeng/app-starter/persistence"
 	"github.com/lishimeng/go-log"
+	"github.com/lishimeng/www"
+	"github.com/lishimeng/www/def"
 	"github.com/lishimeng/www/examples/internal/db"
 	"github.com/lishimeng/www/examples/internal/etc"
 	"github.com/lishimeng/www/examples/manager/ddd"
@@ -32,6 +34,10 @@ func main() {
 }
 
 func _main() (err error) {
+
+	// manager 实施配置，管理账号、身份以及saas组织
+	www.SystemScope = def.Manager
+	www.SystemMenuGroup = "m_manager"
 
 	application := app.New()
 
