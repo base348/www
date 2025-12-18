@@ -6,6 +6,8 @@ import (
 	"github.com/lishimeng/app-starter"
 	"github.com/lishimeng/app-starter/persistence"
 	"github.com/lishimeng/go-log"
+	"github.com/lishimeng/www"
+	"github.com/lishimeng/www/def"
 	"github.com/lishimeng/www/examples/admin/ddd"
 	"github.com/lishimeng/www/examples/admin/setup"
 	"github.com/lishimeng/www/examples/admin/static"
@@ -32,6 +34,10 @@ func main() {
 }
 
 func _main() (err error) {
+
+	// admin 管理员project，权限最高，不设置账号
+	www.SystemScope = def.Admin
+	www.SystemMenuGroup = "m_admin"
 
 	application := app.New()
 
